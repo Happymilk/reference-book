@@ -1,11 +1,11 @@
 {
 "main": "index.html",
-"name": "Сравочник НСИ",
+"name": "Справочник НСИ",
 "description": "description",
 "version": "0.0.1",
 "keywords": [ "demo", "nwjs" ],
 "window": {
-    "title": "Сравочник НСИ",
+    "title": "Справочник НСИ",
     "icon": "icon.png",
     "toolbar": false,
     "frame": true,
