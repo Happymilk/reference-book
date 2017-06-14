@@ -4,16 +4,15 @@ cells.forEach(function(element, index, array){
         //console.log(element);
         //element.toElement.innerHTML = 'dsknk';//менять содержимое ячейки
         //element.toElement.style.color = "red";//менять стиль ячейки
-        var t = element.target || element.srcElement; //получаем название тега
-        var elm_name = t.tagName.toLowerCase(); //если это инпут - ничего не делаем
+        let t = element.target || element.srcElement; //получаем название тега
+        let elm_name = t.tagName.toLowerCase(); //если это инпут - ничего не делаем
         if(elm_name == 'input') {return false;}
-        var val = $(this).html();//$(this).html() == element.toElement.innerHTML
-        var code = '<input type="text" id="edit" value="'+val+'" size='+(val.length - 1)+'/>';
-        console.log(val.length);
+        let val = $(this).html();//$(this).html() == element.toElement.innerHTML
+        let code = '<input type="text" id="edit" value="'+val+'" size='+(val.length - 1)+'/>';
         $(this).empty().append(code);//!!!
         $('#edit').focus();
         $('#edit').blur(function() {
-            var val = $(this).val();
+            let val = $(this).val();
             $(this).parent().empty().html(val);
             document.location.href = '#modal';
         });
@@ -25,3 +24,11 @@ window.addEventListener('keypress',function(event){
         $('#edit').blur();
     }
 });
+
+buttonAdd.onclick = function(firstTable){
+    let t = firstTable.target || firstTable.srcElement; //получаем название тега
+    let elm_name = t.tagName.toLowerCase(); //если это инпут - ничего не делаем
+    let code = '<tr><td>Left info51</td><td>Data info52</td><td>Data info53</td><td>Data info55</td><td>Data info55</td><td>Data info56</td><td>Data info57</td><td>Data info58</td><td>Data info59</td><td>Data info50</td></tr>';
+    $('#firstTable').append(code);//!!!
+    document.location.href = '#close';
+};
