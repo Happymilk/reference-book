@@ -4,11 +4,12 @@
 
 ### Tech
 [![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
+
 Uses a number of open source projects to work properly:
 
 * [Twitter Bootstrap] - great UI boilerplate for modern web apps
 * [node.js] - evented I/O for the backend
-* [Nw] - an app runtime based on Chromium and node.js
+* [nw.js] - an app runtime based on Chromium and node.js
 * [Gulp] - the streaming build system
 * [jQuery] - duh
 
@@ -54,5 +55,5 @@ License
    [express]: <http://expressjs.com>
    [AngularJS]: <http://angularjs.org>
    [Gulp]: <http://gulpjs.com>
-   [Nw]: <https://nwjs.io>
+   [nw.js]: <https://nwjs.io>
 
