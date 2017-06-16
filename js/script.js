@@ -1,3 +1,4 @@
+/*
 //setTimeout('alert("прошло 20 сек")', 20000);
 
 window.onload = function() {
@@ -15,7 +16,7 @@ window.onload = function() {
             currentCell = element.toElement;
             oldVal = $(this).html();//$(this).html() == element.toElement.outerHTML
             let code = '<input type="text" id="edit" value="'+oldVal+'" />'/*'size='+oldVal.length+'/>'*/;
-            $(this).empty().append(code);//!!!
+/*            $(this).empty().append(code);//!!!
             $('#edit').focus();
             $('#edit').blur(function() {
                 let newVal = $(this).val();
@@ -51,3 +52,4 @@ window.onload = function() {
 
 //alert('script.js');
 setTimeout(window.onload(), 5000);
+*/
