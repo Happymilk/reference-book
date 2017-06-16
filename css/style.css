@@ -29,10 +29,7 @@ input{
     overflow: hidden;
     border: none;
     padding: 0;
-}
-
-.table-hover tr td:hover input{
-    background-color: #e7e6e6;
+    background-color: rgba(0,0,0,0);
 }
 
 .btn-group .btn-group{
@@ -79,7 +76,7 @@ input{
   text-align: center;
 }
 
-.modalDialog div a{
+.modalDialog a{
     position: relative;
     top: -20px;
     right: -20px;
@@ -89,8 +86,6 @@ input{
 .form-group{
     margin: 15px 0 0;
 }
-
-
 
 /*--------------------------------------------*/
 .icon{

@@ -43,18 +43,19 @@ function execute(sheet) {
 	code += '</tbody>';
 	window.document.getElementById("firstTable").innerHTML = code;
 
-	yabolshenerabotauvtime();
+	edditCells();
 
 	window.document.getElementById('loader').style.display = 'none';
 	window.document.getElementById('p1').style.display = 'none';
 	window.document.getElementById('p2').style.display = 'none';
 }
 
-function yabolshenerabotauvtime() {
+function edditCells() {
 	let cells = Array.from(document.getElementsByTagName('td')); //массив всех ячеек таблицы
     let rows = Array.from(document.getElementsByTagName('tr'));
     let currentCell;
     let oldVal;
+	let newVal;
     cells.forEach(function(element, index, array){
         element.onclick = function(element){
             //element.toElement.innerHTML = 'dsknk';//менять содержимое ячейки
@@ -64,15 +65,16 @@ function yabolshenerabotauvtime() {
             if(elm_name == 'input') {return false;}//если это инпут - ничего не делаем
             currentCell = element.toElement;
             oldVal = $(this).html();//$(this).html() == element.toElement.outerHTML
-            let code = '<input type="text" id="edit" value="'+oldVal+'" />'/*'size='+oldVal.length+'/>'*/;
+            let code = '<input type="text" id="edit" value="'+oldVal+'"/>'/*'size='+oldVal.length+'/>'*/;
             $(this).empty().append(code);//!!!
             $('#edit').focus();
             $('#edit').blur(function() {
-                let newVal = $(this).val();
+                newVal = $(this).val();
                 if(newVal != oldVal){
-                    $(this).parent().empty().html(newVal);
+                    //$(this).parent().empty().html(newVal);
                     document.location.href = '#modal';
                 }
+				else currentCell.innerHTML = oldVal;
             });
         };
     });
@@ -87,10 +89,11 @@ function yabolshenerabotauvtime() {
 		$('#firstTable').append(currentCell.parentElement.outerHTML);
 		currentCell.innerHTML = oldVal;
 		document.location.href = '#close';
-		yabolshenerabotauvtime();
+		edditCells();
 	};
 
 	buttonChange.onclick = function(){
+		currentCell.outerHTML = '<td>'+newVal+'</td>';
 		document.location.href = '#close';
 	}
 
