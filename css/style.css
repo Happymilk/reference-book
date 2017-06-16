@@ -6,6 +6,10 @@ body {
     padding-top: 65px;
 }
 
+main{
+    margin: 20px;
+}
+
 table tr{
     background-color: white;
 }
@@ -42,6 +46,10 @@ input{
 
 .nav > li > a{
     padding: 15px 9px;
+}
+
+.form-group{
+    margin: 15px 0 0;
 }
 
 .modalDialog {
@@ -81,10 +89,6 @@ input{
     top: -20px;
     right: -20px;
     font-size: 15px;
-}
-
-.form-group{
-    margin: 15px 0 0;
 }
 
 /*--------------------------------------------*/
