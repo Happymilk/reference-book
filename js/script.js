@@ -1,5 +1,3 @@
-//setTimeout('alert("прошло 20 сек")', 20000);
-
 window.onload = function() {
     let cells = Array.from(document.getElementsByTagName('td')); //массив всех ячеек таблицы
     let rows = Array.from(document.getElementsByTagName('tr'));
@@ -49,4 +47,4 @@ window.onload = function() {
     }
 };
 
-alert('script.js');
+setTimeout(window.onload(), 2000);
