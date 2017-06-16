@@ -43,6 +43,14 @@ function execute(sheet) {
 	code += '</tbody>';
 	window.document.getElementById("firstTable").innerHTML = code;
 
+	yabolshenerabotauvtime();
+
+	window.document.getElementById('loader').style.display = 'none';
+	window.document.getElementById('p1').style.display = 'none';
+	window.document.getElementById('p2').style.display = 'none';
+}
+
+function yabolshenerabotauvtime() {
 	let cells = Array.from(document.getElementsByTagName('td')); //массив всех ячеек таблицы
     let rows = Array.from(document.getElementsByTagName('tr'));
     let currentCell;
@@ -69,28 +77,25 @@ function execute(sheet) {
         };
     });
 
-    window.addEventListener('keypress',function(event){
-        if(event.keyCode == 13){
-            $('#edit').blur();
-        }
-    });
+	window.addEventListener('keypress',function(event){
+		if(event.keyCode == 13){
+			$('#edit').blur();
+		}
+	});
 
-    buttonAdd.onclick = function(){
-        $('#firstTable').append(currentCell.parentElement.outerHTML);
-        currentCell.innerHTML = oldVal;
-        document.location.href = '#close';
-    };
+	buttonAdd.onclick = function(){
+		$('#firstTable').append(currentCell.parentElement.outerHTML);
+		currentCell.innerHTML = oldVal;
+		document.location.href = '#close';
+		yabolshenerabotauvtime();
+	};
 
-    buttonChange.onclick = function(){
-        document.location.href = '#close';
-    }
+	buttonChange.onclick = function(){
+		document.location.href = '#close';
+	}
 
-    buttonClose.onclick = function(){
-        currentCell.innerHTML = oldVal;
-        document.location.href = '#close';
-    }
-	
-	window.document.getElementById('loader').style.display = 'none';
-	window.document.getElementById('p1').style.display = 'none';
-	window.document.getElementById('p2').style.display = 'none';
+	buttonClose.onclick = function(){
+		currentCell.innerHTML = oldVal;
+		document.location.href = '#close';
+	}
 }
