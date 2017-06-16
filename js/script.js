@@ -1,3 +1,5 @@
+//setTimeout('alert("прошло 20 сек")', 20000);
+
 window.onload = function() {
     let cells = Array.from(document.getElementsByTagName('td')); //массив всех ячеек таблицы
     let rows = Array.from(document.getElementsByTagName('tr'));
@@ -12,7 +14,7 @@ window.onload = function() {
             if(elm_name == 'input') {return false;}//если это инпут - ничего не делаем
             currentCell = element.toElement;
             oldVal = $(this).html();//$(this).html() == element.toElement.outerHTML
-            let code = '<input type="text" id="edit" value="'+oldVal+'" size='+oldVal.length+'/>';
+            let code = '<input type="text" id="edit" value="'+oldVal+'" />'/*'size='+oldVal.length+'/>'*/;
             $(this).empty().append(code);//!!!
             $('#edit').focus();
             $('#edit').blur(function() {
@@ -47,4 +49,5 @@ window.onload = function() {
     }
 };
 
-setTimeout(window.onload(), 2000);
+//alert('script.js');
+setTimeout(window.onload(), 5000);
