@@ -12,8 +12,6 @@
         <link href="css/style.css" rel="stylesheet">
     </head>
     <body>
-        <div class="pulse1" id="p1"></div>
-        <div class="pulse2" id="p2"></div>
         <div class="icon" id="loader"></div>
         <header>
             <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
@@ -24,7 +22,7 @@
                         </button>
                     </div>
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        <ul class="nav navbar-nav navbar-right" id="navvv">
+                        <ul class="nav navbar-nav navbar-right" id="navigation">
                         </ul>
                     </div>
                 </div>
@@ -34,7 +32,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="btn-group" role="group" aria-label="...">
-                        <button type="button" class="btn btn-default">Поиск</button>
+                        <button type="button" class="btn btn-default" id="buttonSearch">Поиск</button>
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Фильтрация <span class="caret"></span>
@@ -44,7 +42,6 @@
                                 <li><a href="#">Метод 2</a></li>
                             </ul>
                         </div>
-
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Сортировка <span class="caret"></span>
@@ -55,32 +52,37 @@
                             </ul>
                         </div>
                     </div>
-                    <div>
-                        <button type="button" class="btn btn-default">Добавить запись</button>
-                        <button type="button" class="btn btn-default">Удалить запись</button>
-                    </div>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-success" id="buttonAddRow">Добавить строку</button>
+                            <button type="button" class="btn btn-success" id="buttonAddColl">Добавить колонку</button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-danger" id="buttonDeleteRow">Удалить строку</button>
+                            <button type="button" class="btn btn-danger" id="buttonDeleteColl">Удалить колонку</button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-info" id="buttonOperChanges">Именения по оператору</button>
+                        </div>
                 </div>
                 <div class="row">
-                    <table class="table table-hover table-bordered" id="testTable">
-                    </table>
                     <table class="table table-hover table-bordered" id="firstTable">
                     </table>
                 </div>
             </div>
                 <div id="modal" class="modalDialog">
                     <form>
-                        <a id="buttonClose" title="Закрыть" class="close">X</a>
+                        <a id="modalClose" title="Закрыть" class="close">X</a>
                         <h3>Создать новую запись или изменить существующую?</h3>
                         <div class="form-group">
-                            <button type="button" class="btn btn-default" id="buttonAdd">Cоздать</button>
-                            <button type="button" class="btn btn-default" id="buttonChange">Изменить</button>
+                            <button type="button" class="btn btn-default" id="modalAdd">Cоздать</button>
+                            <button type="button" class="btn btn-default" id="modalChange">Изменить</button>
                         </div>
                     </form>
                 </div>
         </main>
         <script src="js/excelEngine.js"></script>
         <script src="vendor/jquery/jquery.js"></script>
-        <script type="text/javascript" src="js/autorize_jq.js"></script>
+        <script src="js/autorize_jq.js"></script>
         <script type="text/javascript">
         	jQuery(function()
         	{

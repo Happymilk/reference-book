@@ -6,19 +6,23 @@
 [x] размер ячейки не должен скакать при фокусе
 [ ] динамический размер ячеек
 [ ] странный формат даты
+[x] при добавлении новой строки, не хватате ячеек в конце, если ранее добавлялись новые столбцы
 
 Необходиме фичи
 [x] редактирование
 [x] редактирование с добавлением новой строки
 [x] подгрузка из файла
 [x] динамическая загрузка таблиц
-[ ] фильт по клику на ячейку ф шапке
+[ ] фильтр по клику на ячейку в шапке
 [ ] сортировка по ???
-[ ] добавление новой строки
-[ ] при добавлении запими(редактирование!!!), добавлять дату редактирования
+[х] добавление новой строки
+[х] добавление нового столбца
+[ ] при добавлении запиcи(редактирование!!!), добавлять дату редактирования
 [ ] поиск
-[ ] удаление строк
-[ ] РЕДАКТИРОВАНИЕ ФАЙЛА*/
+[ ] удаление строки
+[ ] удаление столбца
+[ ] РЕДАКТИРОВАНИЕ ФАЙЛА
+[ ] История изменений по оператору*/
 
 
 const Excel = require('exceljs');
@@ -28,17 +32,15 @@ let workbook = new Excel.Workbook();
 workbook.xlsx.readFile("НСИ.xlsx").then(function() {
 	let index = 1;
 	workbook.eachSheet(function(worksheet, sheetId) {
-		window.document.getElementById("navvv").innerHTML += '<li><a class="page-scroll" onclick="execute('+ index + ')">' + worksheet.name + '</a></li>';
+		window.document.getElementById("navigation").innerHTML += '<li><a class="page-scroll" onclick="createTable('+ index + ')">' + worksheet.name + '</a></li>';
 		indexes.push(sheetId);
 		index++;
 	});
-	execute(1);
+	createTable(1);
 });
 
-function execute(sheet) {
+function createTable(sheet) {
 	window.document.getElementById('loader').style.display = 'block';
-	window.document.getElementById('p1').style.display = 'block';
-	window.document.getElementById('p2').style.display = 'block';
 
 	let worksheet = workbook.getWorksheet(indexes[sheet]);
 	let rowcount = 0;
@@ -70,8 +72,6 @@ function execute(sheet) {
 	edditCells();
 
 	window.document.getElementById('loader').style.display = 'none';
-	window.document.getElementById('p1').style.display = 'none';
-	window.document.getElementById('p2').style.display = 'none';
 }
 
 function edditCells() {
@@ -110,21 +110,48 @@ function edditCells() {
 		}
 	});
 
-	buttonAdd.onclick = function(){
-		currentCell.innerHTML = oldVal;
+	modalAdd.onclick = function(){
+		currentCell.innerHTML = newVal;
 		$('#firstTable').append(currentCell.parentElement.outerHTML);
-		alert(currentCell.innerHTML);
+		currentCell.innerHTML = oldVal;
 		document.location.href = '#close';
 		edditCells();
 	};
 
-	buttonChange.onclick = function(){
-		currentCell.outerHTML = '<td>'+newVal+'</td>';
+	modalChange.onclick = function(){
+		currentCell.innerHTML = newVal;
 		document.location.href = '#close';
 	}
 
-	buttonClose.onclick = function(){
+	modalClose.onclick = function(){
 		currentCell.innerHTML = oldVal;
 		document.location.href = '#close';
+	}
+
+	buttonDeleteRow.onclick = function(){
+		alert('Удалить строку');
+	}
+
+	buttonDeleteColl.onclick = function(){
+		alert('Удалить колонку');
+	}
+
+	buttonAddRow.onclick = function(){
+		let cells = Array.from(document.getElementsByTagName('td')); //массив всех ячеек таблицы
+	    let rows = Array.from(document.getElementsByTagName('tr'));
+		let code = '<tr>';
+		for (let i = 1; i <= (cells.length)/(rows.length); i++)
+			code += '<td></td>';
+		code += '</tr>';
+		$('#firstTable').append(code);
+		edditCells();
+	}
+
+	buttonAddColl.onclick = function(){
+		$('tr').append('<td></td>');
+	}
+
+	buttonSearch.onclick = function(){
+		alert('Искать запись');
 	}
 }
