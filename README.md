@@ -13,7 +13,7 @@ Uses a number of open source projects to work properly:
 * [Gulp] - the streaming build system
 * [jQuery] - duh
 
-### Installation
+### Installation (Win)
 
 Requires [Node.js](https://nodejs.org/) v8+ to run.
 
@@ -24,10 +24,38 @@ $ cd reference-book
 $ npm install excelljs
 ```
 
+Requires [NW.js](https://nwjs.io/downloads/) v0.23.3+ to run.
+
 #### Building for source
 For production release:
 ```sh
 $ nwbuild reference-book -o destination/directory
+```
+
+### Installation (OS X)
+
+Requires [Node.js](https://nodejs.org/) v8+ to run.
+
+Install the dependencies.
+
+```sh
+$ cd reference-book
+$ npm install excelljs
+```
+
+Requires [NW.js](https://nwjs.io/downloads/) v0.23.3+ to run.
+
+#### Building for source
+For production release:
+
+```sh
+$ alias nw="/Applications/nwjs.app/Contnts/MacOS/nwjs"
+```
+Put dir with your project to /Applications/nwjs.app/Contnts/
+
+Then run your app
+```sh
+$ nw /Applications/nwjs.app/Contnts/YOUR_DIR"
 ```
 
 License
