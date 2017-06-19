@@ -1,7 +1,30 @@
+/* Ошибки/баги/проблемы к исправлению
+[x] ошибка при клике по ячейке - появление кода
+[ ] [object Object]
+[x] при редактировании не хочет брать все что в кавычках
+[x] при создании элементов фокус всегда на первой строке первой созданной ячейке
+[x] размер ячейки не должен скакать при фокусе
+[ ] динамический размер ячеек
+[ ] странный формат даты
+
+Необходиме фичи
+[x] редактирование
+[x] редактирование с добавлением новой строки
+[x] подгрузка из файла
+[x] динамическая загрузка таблиц
+[ ] фильт по клику на ячейку ф шапке
+[ ] сортировка по ???
+[ ] добавление новой строки
+[ ] при добавлении запими(редактирование!!!), добавлять дату редактирования
+[ ] поиск
+[ ] удаление строк
+[ ] РЕДАКТИРОВАНИЕ ФАЙЛА*/
+
+
 const Excel = require('exceljs');
 let indexes = [null];
-
 let workbook = new Excel.Workbook();
+
 workbook.xlsx.readFile("НСИ.xlsx").then(function() {
 	let index = 1;
 	workbook.eachSheet(function(worksheet, sheetId) {
@@ -35,7 +58,8 @@ function execute(sheet) {
 		code += '<tr>'
 		let row = worksheet.getRow(i);
 		for (let j = 1; j <= max; j++)
-			if (row.getCell(j).value != null) code += '<td>' + row.getCell(j).value + '</td>';
+			if (row.getCell(j).value != null)
+				code += '<td>' + row.getCell(j).value + '</td>';
 			else code += '<td></td>';
 
 		code += '</tr>'
@@ -58,22 +82,23 @@ function edditCells() {
 	let newVal;
     cells.forEach(function(element, index, array){
         element.onclick = function(element){
-            //element.toElement.innerHTML = 'dsknk';//менять содержимое ячейки
-            //element.toElement.style.color = "red";//менять стиль ячейки
+			let cellHeight = element.target.clientHeight;
+			let cellWidth = element.target.clientWidth;
             let t = element.target || element.srcElement;
             let elm_name = t.tagName.toLowerCase();//получаем название тега
-            if(elm_name == 'input') {return false;}//если это инпут - ничего не делаем
+            if(elm_name == 'textarea') {return false;}//если это инпут - ничего не делаем
             currentCell = element.toElement;
-            oldVal = $(this).html();//$(this).html() == element.toElement.outerHTML
-            let code = '<input type="text" id="edit" value="'+oldVal+'"/>'/*'size='+oldVal.length+'/>'*/;
-            $(this).empty().append(code);//!!!
+            oldVal = $(this).html();
+			let code = '<textarea name="text" id="edit">'+oldVal+'</textarea>';
+			$(this).empty().append(code);//!!!
+			let area = document.getElementById('edit');
+			area.style.height = (cellHeight - 22)+'px';
+			area.style.width = (cellWidth - 16)+'px';
             $('#edit').focus();
             $('#edit').blur(function() {
                 newVal = $(this).val();
-                if(newVal != oldVal){
-                    //$(this).parent().empty().html(newVal);
+                if(newVal != oldVal)
                     document.location.href = '#modal';
-                }
 				else currentCell.innerHTML = oldVal;
             });
         };
@@ -86,8 +111,9 @@ function edditCells() {
 	});
 
 	buttonAdd.onclick = function(){
-		$('#firstTable').append(currentCell.parentElement.outerHTML);
 		currentCell.innerHTML = oldVal;
+		$('#firstTable').append(currentCell.parentElement.outerHTML);
+		alert(currentCell.innerHTML);
 		document.location.href = '#close';
 		edditCells();
 	};
