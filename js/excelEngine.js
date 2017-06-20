@@ -13,7 +13,8 @@
 [x] редактирование с добавлением новой строки
 [x] подгрузка из файла
 [x] динамическая загрузка таблиц
-[ ] фильтр по клику на ячейку в шапке
+[х] реакция шапки на левый клик
+[ ] фильтр по левому клику на ячейку в шапке
 [ ] сортировка по ???
 [х] добавление новой строки
 [х] добавление нового столбца
@@ -61,7 +62,9 @@ function createTable(sheet) {
 		let row = worksheet.getRow(i);
 		for (let j = 1; j <= max; j++)
 			if (row.getCell(j).value != null)
-				code += '<td>' + row.getCell(j).value + '</td>';
+				if(j==1)
+					code += '<td class="tableHead">' + row.getCell(j).value + '</td>';
+				else code += '<td>' + row.getCell(j).value + '</td>';
 			else code += '<td></td>';
 
 		code += '</tr>'
@@ -103,6 +106,17 @@ function edditCells() {
             });
         };
     });
+
+	for(let currentColl = 0;currentColl<=(cells.length)/(rows.length);currentColl++) //фильтрация
+		cells[currentColl].oncontextmenu = function(){
+			let count = 0;
+			cells.forEach(function(element, index, array){
+				if(index == count*((cells.length)/(rows.length))+currentColl){
+					alert(element.innerHTML);
+					count++;
+				}
+			});
+		}
 
 	window.addEventListener('keypress',function(event){
 		if(event.keyCode == 13){
@@ -149,6 +163,7 @@ function edditCells() {
 
 	buttonAddColl.onclick = function(){
 		$('tr').append('<td></td>');
+		edditCells();
 	}
 
 	buttonSearch.onclick = function(){
