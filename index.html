@@ -35,7 +35,7 @@
                         <button type="button" class="btn btn-default" id="buttonSearch">Поиск</button>
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Фильтрация <span class="caret"></span>
+                            Фильтрация <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
                                 <li><a href="#">Метод 1</a></li>
@@ -44,7 +44,7 @@
                         </div>
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Сортировка <span class="caret"></span>
+                            Сортировка <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
                                 <li><a href="#">Метод 1</a></li>
@@ -52,43 +52,36 @@
                             </ul>
                         </div>
                     </div>
-                        <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-success" id="buttonAddRow">Добавить строку</button>
-                            <button type="button" class="btn btn-success" id="buttonAddColl">Добавить колонку</button>
-                        </div>
-                        <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-danger" id="buttonDeleteRow">Удалить строку</button>
-                            <button type="button" class="btn btn-danger" id="buttonDeleteColl">Удалить колонку</button>
-                        </div>
-                        <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-info" id="buttonOperChanges">Именения по оператору</button>
-                        </div>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-success" id="buttonAddRow">Добавить строку</button>
+                        <button type="button" class="btn btn-success" id="buttonAddColl">Добавить колонку</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-danger" id="buttonDeleteRow">Удалить строку</button>
+                        <button type="button" class="btn btn-danger" id="buttonDeleteColl">Удалить колонку</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-info" id="buttonOperChanges">Именения по оператору</button>
+                    </div>
                 </div>
                 <div class="row">
                     <table class="table table-hover table-bordered" id="firstTable">
                     </table>
                 </div>
             </div>
-                <div id="modal" class="modalDialog">
-                    <form>
-                        <a id="modalClose" title="Закрыть" class="close">X</a>
-                        <h3>Создать новую запись или изменить существующую?</h3>
-                        <div class="form-group">
-                            <button type="button" class="btn btn-default" id="modalAdd">Cоздать</button>
-                            <button type="button" class="btn btn-default" id="modalChange">Изменить</button>
-                        </div>
-                    </form>
-                </div>
+            <div id="modal" class="modalDialog">
+                <form>
+                    <a id="modalClose" title="Закрыть" class="close">X</a>
+                    <h3>Создать новую запись или изменить существующую?</h3>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-default" id="modalAdd">Cоздать</button>
+                        <button type="button" class="btn btn-default" id="modalChange">Изменить</button>
+                    </div>
+                </form>
+            </div>
         </main>
         <script src="js/excelEngine.js"></script>
         <script src="vendor/jquery/jquery.js"></script>
-        <script src="js/autorize_jq.js"></script>
-        <script type="text/javascript">
-        	jQuery(function()
-        	{
-        		jQuery('textarea').autoResize();
-        	});
-        </script>
         <script src="vendor/bootstrap/js/bootstrap.js"></script>
     </body>
 </html>
