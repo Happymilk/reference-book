@@ -119,11 +119,6 @@ function edditCells() {
 				}
 			});
 
-			GnomeSort1(filterCells);
-			filterCells.forEach(function(element, index, array){
-				alert(element);
-			});
-
 			GnomeSort(filterCells,rows);
 			let a = '';
 		    rows.forEach(function(element, index, array){
@@ -210,26 +205,4 @@ function GnomeSort(A,B){
 		}
 	}
 	return B;
-}
-
-function GnomeSort1(A){
-    let n = A.length, i = 2, j = 3;
-    while (i < n)
-	{
-		if (A[i-1] < A[i]){
-			i = j;
-			j++;
-		}
-		else {
-			let t = A[i-1];
-			A[i-1] = A[i];
-			A[i] = t;
-			i--;
-			if (i == 1){
-				i = j;
-				j++;
-			}
-		}
-	}
-	return A;
 }
