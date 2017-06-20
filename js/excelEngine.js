@@ -7,6 +7,7 @@
 [ ] динамический размер ячеек
 [ ] странный формат даты
 [x] при добавлении новой строки, не хватате ячеек в конце, если ранее добавлялись новые столбцы
+[ ] модифицировать алгоритм сортировки!! (сортирует по суммам номеров символов)
 
 Необходиме фичи
 [x] редактирование
@@ -14,8 +15,8 @@
 [x] подгрузка из файла
 [x] динамическая загрузка таблиц
 [х] реакция шапки на левый клик
-[ ] фильтр по левому клику на ячейку в шапке
-[ ] сортировка по ???
+[ ] фильтр
+[x] сортировка по левому клику на ячейку в шапке
 [х] добавление новой строки
 [х] добавление нового столбца
 [ ] при добавлении запиcи(редактирование!!!), добавлять дату редактирования
@@ -107,15 +108,33 @@ function edditCells() {
         };
     });
 
-	for(let currentColl = 0;currentColl<=(cells.length)/(rows.length);currentColl++) //фильтрация
+	for(let currentColl = 0;currentColl<=(cells.length)/(rows.length);currentColl++) //сортировка
 		cells[currentColl].oncontextmenu = function(){
-			let count = 0;
-			cells.forEach(function(element, index, array){
+			let count = 1;
+			let filterCells = [];
+			cells.forEach(function(element,index){
 				if(index == count*((cells.length)/(rows.length))+currentColl){
-					alert(element.innerHTML);
+					filterCells.push(element.innerHTML);
 					count++;
 				}
 			});
+
+			GnomeSort1(filterCells);
+			filterCells.forEach(function(element, index, array){
+				alert(element);
+			});
+
+			GnomeSort(filterCells,rows);
+			let a = '';
+		    rows.forEach(function(element, index, array){
+		        a += element.outerHTML;
+		    });
+			window.document.getElementById("firstTable").innerHTML = a;
+			filterCells.forEach(function(element,index){//if ячейка больше другой, поднять строку, соответствующую ячейке(перегенерировать таблицу?)
+				//alert(element);
+			});
+
+			edditCells();
 		}
 
 	window.addEventListener('keypress',function(event){
@@ -169,4 +188,48 @@ function edditCells() {
 	buttonSearch.onclick = function(){
 		alert('Искать запись');
 	}
+}
+
+function GnomeSort(A,B){
+    let n = A.length, i = 2, j = 3;
+    while (i < n)
+	{
+		if (A[i-1] < A[i]){
+			i = j;
+			j++;
+		}
+		else {
+			let t = B[i-1];
+			B[i-1] = B[i];
+			B[i] = t;
+			i--;
+			if (i == 1){
+				i = j;
+				j++;
+			}
+		}
+	}
+	return B;
+}
+
+function GnomeSort1(A){
+    let n = A.length, i = 2, j = 3;
+    while (i < n)
+	{
+		if (A[i-1] < A[i]){
+			i = j;
+			j++;
+		}
+		else {
+			let t = A[i-1];
+			A[i-1] = A[i];
+			A[i] = t;
+			i--;
+			if (i == 1){
+				i = j;
+				j++;
+			}
+		}
+	}
+	return A;
 }
