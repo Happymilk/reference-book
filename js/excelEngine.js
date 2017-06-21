@@ -6,8 +6,10 @@
 [x] размер ячейки не должен скакать при фокусе
 [ ] динамический размер ячеек
 [ ] странный формат даты
-[x] при добавлении новой строки, не хватате ячеек в конце, если ранее добавлялись новые столбцы
-[ ] модифицировать алгоритм сортировки!! (сортирует по суммам номеров символов)
+[x] при добавлении новой строки, не хватате ячеек в конце строки, если ранее добавлялись новые столбцы
+[х] при сортировке все скачет
+[ ] модифицировать алгоритм сортировки!! (сортирует по алфавиту даже цифры + скачет при одинаковых данных в строках)
+[ ] пустые строки
 
 Необходиме фичи
 [x] редактирование
@@ -121,6 +123,14 @@ function GnomeSort(arrToAnalyze, arrToSort) {
 	let i = 2;
 	let j = 3;
 	while (i < arrToAnalyze.length) {
+		if(typeof(arrToAnalyze[i - 1])=='string') //если строка только из цифр - перевести в намбер и сравнивать как числа
+			if (arrToAnalyze[i - 1].search(/^[0-9]+$/gm) == 0){
+				arrToAnalyze[i - 1] = Number(arrToAnalyze[i - 1]);
+			}
+		if (typeof(arrToAnalyze[i])=='string')
+			if (arrToAnalyze[i].search(/^[0-9]+$/gm) == 0){
+				arrToAnalyze[i] = Number(arrToAnalyze[i]);
+			}
 		if (arrToAnalyze[i - 1] < arrToAnalyze[i]) {
 			i = j;
 			j++;
@@ -139,27 +149,6 @@ function GnomeSort(arrToAnalyze, arrToSort) {
 		}
 	}
 	return arrToSort;
-}
-
-function GnomeSort1(arrToAnalyze) {
-	let i = 2;
-	let j = 3;
-	while (i < arrToAnalyze.length) {
-		if (arrToAnalyze[i - 1] < arrToAnalyze[i]) {
-			i = j;
-			j++;
-		} else {
-			let t = arrToAnalyze[i - 1];
-			arrToAnalyze[i - 1] = arrToAnalyze[i];
-			arrToAnalyze[i] = t;
-			i--;
-			if (i == 1) {
-				i = j;
-				j++;
-			}
-		}
-	}
-	return arrToAnalyze;
 }
 
 function sortTable(){
