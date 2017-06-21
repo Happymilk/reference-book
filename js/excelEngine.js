@@ -6,8 +6,10 @@
 [x] размер ячейки не должен скакать при фокусе
 [ ] динамический размер ячеек
 [ ] странный формат даты
-[x] при добавлении новой строки, не хватате ячеек в конце, если ранее добавлялись новые столбцы
-[ ] модифицировать алгоритм сортировки!! (сортирует по суммам номеров символов)
+[x] при добавлении новой строки, не хватате ячеек в конце строки, если ранее добавлялись новые столбцы
+[х] при сортировке все скачет
+[ ] модифицировать алгоритм сортировки!! (сортирует по алфавиту даже цифры + скачет при одинаковых данных в строках)
+[ ] пустые строки
 
 Необходиме фичи
 [x] редактирование
@@ -62,9 +64,7 @@ function createTable(sheet) {
 		let row = worksheet.getRow(i);
 		for (let j = 1; j <= max; j++)
 			if (row.getCell(j).value != null)
-				if (j == 1)
-					code += '<td class="tableHead">' + row.getCell(j).value + '</td>';
-				else code += '<td>' + row.getCell(j).value + '</td>';
+				code += '<td>' + row.getCell(j).value + '</td>';
 		else code += '<td></td>';
 		code += '</tr>'
 	}
@@ -123,6 +123,14 @@ function GnomeSort(arrToAnalyze, arrToSort) {
 	let i = 2;
 	let j = 3;
 	while (i < arrToAnalyze.length) {
+		if(typeof(arrToAnalyze[i - 1])=='string') //если строка только из цифр - перевести в намбер и сравнивать как числа
+			if (arrToAnalyze[i - 1].search(/^[0-9]+$/gm) == 0){
+				arrToAnalyze[i - 1] = Number(arrToAnalyze[i - 1]);
+			}
+		if (typeof(arrToAnalyze[i])=='string')
+			if (arrToAnalyze[i].search(/^[0-9]+$/gm) == 0){
+				arrToAnalyze[i] = Number(arrToAnalyze[i]);
+			}
 		if (arrToAnalyze[i - 1] < arrToAnalyze[i]) {
 			i = j;
 			j++;
@@ -130,6 +138,9 @@ function GnomeSort(arrToAnalyze, arrToSort) {
 			let t = arrToSort[i - 1];
 			arrToSort[i - 1] = arrToSort[i];
 			arrToSort[i] = t;
+			t = arrToAnalyze[i - 1];
+			arrToAnalyze[i - 1] = arrToAnalyze[i];
+			arrToAnalyze[i] = t;
 			i--;
 			if (i == 1) {
 				i = j;
@@ -144,9 +155,9 @@ function sortTable(){
 	let cells = Array.from(document.getElementsByTagName('td')); //массив всех ячеек таблицы
 	let rows = Array.from(document.getElementsByTagName('tr'));
 
-	for (let currentColl = 0; currentColl <= (cells.length) / (rows.length); currentColl++){ //сортировка
-		cells[currentColl].oncontextmenu = function () {
-			let count = 1;
+	for (let currentColl = 0; currentColl < (cells.length) / (rows.length); currentColl++){ //для шапки
+		cells[currentColl].oncontextmenu = function () {//по правому клику
+			let count = 0;
 			let filterCells = [];
 			cells.forEach(function (element, index) {
 				if (index == count * ((cells.length) / (rows.length)) + currentColl) {
@@ -157,14 +168,12 @@ function sortTable(){
 
 			GnomeSort(filterCells, rows);
 			let a = '';
+			let c = 0;
 			rows.forEach(function (element, index, array) {
 				a += element.outerHTML;
+				c++;
 			});
 			window.document.getElementById("firstTable").innerHTML = a;
-			filterCells.forEach(function (element, index) { //if ячейка больше другой, поднять строку, соответствующую ячейке(перегенерировать таблицу?)
-				//alert(element);
-			});
-
 			workWithTable();
 		}
 	}
