@@ -1,31 +1,57 @@
+/* Ошибки/баги/проблемы к исправлению
+[x] ошибка при клике по ячейке - появление кода
+[ ] [object Object]
+[x] при редактировании не хочет брать все что в кавычках
+[x] при создании элементов фокус всегда на первой строке первой созданной ячейке
+[x] размер ячейки не должен скакать при фокусе
+[ ] динамический размер ячеек
+[ ] странный формат даты
+[x] при добавлении новой строки, не хватате ячеек в конце, если ранее добавлялись новые столбцы
+[ ] модифицировать алгоритм сортировки!! (сортирует по суммам номеров символов)
+
+Необходиме фичи
+[x] редактирование
+[x] редактирование с добавлением новой строки
+[x] подгрузка из файла
+[x] динамическая загрузка таблиц
+[х] реакция шапки на левый клик
+[ ] фильтр
+[x] сортировка по левому клику на ячейку в шапке
+[х] добавление новой строки
+[х] добавление нового столбца
+[ ] при добавлении запиcи(редактирование!!!), добавлять дату редактирования
+[ ] поиск
+[ ] удаление строки
+[ ] удаление столбца
+[ ] РЕДАКТИРОВАНИЕ ФАЙЛА
+[ ] История изменений по оператору*/
+
 const Excel = require('exceljs');
 let indexes = [null];
-
 let workbook = new Excel.Workbook();
-workbook.xlsx.readFile("НСИ.xlsx").then(function() {
+
+workbook.xlsx.readFile("НСИ.xlsx").then(function () {
 	let index = 1;
-	workbook.eachSheet(function(worksheet, sheetId) {
-		window.document.getElementById("navvv").innerHTML += '<li><a class="page-scroll" onclick="execute('+ index + ')">' + worksheet.name + '</a></li>';
+	workbook.eachSheet(function (worksheet, sheetId) {
+		window.document.getElementById("navigation").innerHTML += '<li><a class="page-scroll" onclick="createTable(' + index + ')">' + worksheet.name + '</a></li>';
 		indexes.push(sheetId);
 		index++;
 	});
-	execute(1);
+	createTable(1);
 });
 
-function execute(sheet) {
+function createTable(sheet) {
 	window.document.getElementById('loader').style.display = 'block';
-	window.document.getElementById('p1').style.display = 'block';
-	window.document.getElementById('p2').style.display = 'block';
 
 	let worksheet = workbook.getWorksheet(indexes[sheet]);
 	let rowcount = 0;
 
-	worksheet.getColumn(1).eachCell(function(cell, rowNumber) {
+	worksheet.getColumn(1).eachCell(function (cell, rowNumber) {
 		rowcount = rowNumber;
 	});
 	let max = 0;
-	worksheet.eachRow(function(row, rowNumber) {
-		row.eachCell(function(cell, colNumber) {
+	worksheet.eachRow(function (row, rowNumber) {
+		row.eachCell(function (cell, colNumber) {
 			if (max < colNumber) max = colNumber;
 		});
 	});
@@ -35,67 +61,163 @@ function execute(sheet) {
 		code += '<tr>'
 		let row = worksheet.getRow(i);
 		for (let j = 1; j <= max; j++)
-			if (row.getCell(j).value != null) code += '<td>' + row.getCell(j).value + '</td>';
-			else code += '<td></td>';
-
+			if (row.getCell(j).value != null)
+				if (j == 1)
+					code += '<td class="tableHead">' + row.getCell(j).value + '</td>';
+				else code += '<td>' + row.getCell(j).value + '</td>';
+		else code += '<td></td>';
 		code += '</tr>'
 	}
 	code += '</tbody>';
 	window.document.getElementById("firstTable").innerHTML = code;
 
-	yabolshenerabotauvtime();
+	workWithTable();
 
 	window.document.getElementById('loader').style.display = 'none';
-	window.document.getElementById('p1').style.display = 'none';
-	window.document.getElementById('p2').style.display = 'none';
 }
 
-function yabolshenerabotauvtime() {
+function edditCells() {
 	let cells = Array.from(document.getElementsByTagName('td')); //массив всех ячеек таблицы
-    let rows = Array.from(document.getElementsByTagName('tr'));
-    let currentCell;
-    let oldVal;
-    cells.forEach(function(element, index, array){
-        element.onclick = function(element){
-            //element.toElement.innerHTML = 'dsknk';//менять содержимое ячейки
-            //element.toElement.style.color = "red";//менять стиль ячейки
-            let t = element.target || element.srcElement;
-            let elm_name = t.tagName.toLowerCase();//получаем название тега
-            if(elm_name == 'input') {return false;}//если это инпут - ничего не делаем
-            currentCell = element.toElement;
-            oldVal = $(this).html();//$(this).html() == element.toElement.outerHTML
-            let code = '<input type="text" id="edit" value="'+oldVal+'" />'/*'size='+oldVal.length+'/>'*/;
-            $(this).empty().append(code);//!!!
-            $('#edit').focus();
-            $('#edit').blur(function() {
-                let newVal = $(this).val();
-                if(newVal != oldVal){
-                    $(this).parent().empty().html(newVal);
-                    document.location.href = '#modal';
-                }
-            });
-        };
-    });
+	let rows = Array.from(document.getElementsByTagName('tr'));
+	cells.forEach(function (element, index, array) {
+		element.onclick = function (element) {
+			let t = element.target || element.srcElement;
+			let cellH = element.target.clientHeight;
+			let cellW = element.target.clientWidth;
 
-	window.addEventListener('keypress',function(event){
-		if(event.keyCode == 13){
-			$('#edit').blur();
-		}
+			if (t.tagName.toLowerCase() == 'textarea') return false;
+			edditCells.cellToEdit = element.toElement;
+			edditCells.oldCellVal = $(this).html();
+
+			let code = '<textarea name="text" id="edit">' + edditCells.oldCellVal + '</textarea>';
+			$(this).empty().append(code);
+
+			let cellArea = document.getElementById('edit');
+			cellArea.style.height = (cellH - 22) + 'px';
+			cellArea.style.width = (cellW - 16) + 'px';
+
+			$('#edit').focus();
+			$('#edit').blur(function () {
+				edditCells.newCellVal = $(this).val();
+				if (edditCells.newCellVal != edditCells.oldCellVal)
+					document.location.href = '#modal';
+				else edditCells.cellToEdit.innerHTML = edditCells.oldCellVal;
+			});
+		};
 	});
 
-	buttonAdd.onclick = function(){
-		$('#firstTable').append(currentCell.parentElement.outerHTML);
-		currentCell.innerHTML = oldVal;
-		document.location.href = '#close';
-		yabolshenerabotauvtime();
-	};
+	window.addEventListener('keypress', function (event) {
+		if (event.keyCode == 13)
+			$('#edit').blur();
+	});
+}
 
-	buttonChange.onclick = function(){
-		document.location.href = '#close';
-	}
+function workWithTable(){
+	edditCells();
+	sortTable();
+}
 
-	buttonClose.onclick = function(){
-		currentCell.innerHTML = oldVal;
-		document.location.href = '#close';
+/*-----------------------------------сортировка-------------------------------*/
+
+function GnomeSort(arrToAnalyze, arrToSort) {
+	let i = 2;
+	let j = 3;
+	while (i < arrToAnalyze.length) {
+		if (arrToAnalyze[i - 1] < arrToAnalyze[i]) {
+			i = j;
+			j++;
+		} else {
+			let t = arrToSort[i - 1];
+			arrToSort[i - 1] = arrToSort[i];
+			arrToSort[i] = t;
+			i--;
+			if (i == 1) {
+				i = j;
+				j++;
+			}
+		}
 	}
+	return arrToSort;
+}
+
+function sortTable(){
+	let cells = Array.from(document.getElementsByTagName('td')); //массив всех ячеек таблицы
+	let rows = Array.from(document.getElementsByTagName('tr'));
+
+	for (let currentColl = 0; currentColl <= (cells.length) / (rows.length); currentColl++){ //сортировка
+		cells[currentColl].oncontextmenu = function () {
+			let count = 1;
+			let filterCells = [];
+			cells.forEach(function (element, index) {
+				if (index == count * ((cells.length) / (rows.length)) + currentColl) {
+					filterCells.push(element.innerHTML);
+					count++;
+				}
+			});
+
+			GnomeSort(filterCells, rows);
+			let a = '';
+			rows.forEach(function (element, index, array) {
+				a += element.outerHTML;
+			});
+			window.document.getElementById("firstTable").innerHTML = a;
+			filterCells.forEach(function (element, index) { //if ячейка больше другой, поднять строку, соответствующую ячейке(перегенерировать таблицу?)
+				//alert(element);
+			});
+
+			workWithTable();
+		}
+	}
+}
+
+/*-----------------------------------обработчики кнопок-----------------------*/
+
+buttonAddRow.onclick = function(){
+	let cells = Array.from(document.getElementsByTagName('td')); //массив всех ячеек таблицы
+	let rows = Array.from(document.getElementsByTagName('tr'));
+	let code = '<tr>';
+	for (let i = 1; i <= (cells.length) / (rows.length); i++)
+		code += '<td></td>';
+	code += '</tr>';
+	$('#firstTable').append(code);
+	workWithTable();
+}
+
+buttonAddColl.onclick = function(){
+	$('tr').append('<td></td>');
+	workWithTable();
+}
+
+buttonDeleteRow.onclick = function(){
+	alert('Удалить строку');
+}
+
+buttonDeleteColl.onclick = function(){
+	alert('Удалить колонку');
+}
+
+buttonSearch.onclick = function(){
+	alert('Искать запись');
+}
+
+buttonOperChanges.onclick = function(){
+	alert('История изменений по оператору');
+}
+
+modalAdd.onclick = function(){
+	edditCells.cellToEdit.innerHTML = edditCells.newCellVal;
+	$('#firstTable').append(edditCells.cellToEdit.parentElement.outerHTML);
+	edditCells.cellToEdit.innerHTML = edditCells.oldCellVal;
+	document.location.href = '#close';
+	workWithTable();
+};
+
+modalChange.onclick = function(){
+	edditCells.cellToEdit.innerHTML = edditCells.newCellVal;
+	document.location.href = '#close';
+}
+
+modalClose.onclick = function(){
+	edditCells.cellToEdit.innerHTML = edditCells.oldCellVal;
+	document.location.href = '#close';
 }
