@@ -6,7 +6,7 @@
 [x] при добавлении новой строки, не хватате ячеек в конце строки, если ранее добавлялись новые столбцы
 [х] при сортировке все скачет
 [x] модифицировать алгоритм сортировки!! (сортирует по алфавиту даже цифры + скачет при одинаковых данных в строках)
-[ ] [object Object]
+[х] [object Object]
 [ ] динамический размер ячеек
 [ ] странный формат даты
 [ ] пустые строки
@@ -69,7 +69,16 @@ function createTable(sheet) {
 		let row = worksheet.getRow(i);
 		for (let j = 1; j <= max; j++)
 			if (row.getCell(j).value != null)
-				code += '<td>' + row.getCell(j).value + '</td>';
+				if (row.getCell(j).value.result != undefined)
+					code += '<td>' + row.getCell(j).value.result + '</td>';
+				else if (row.getCell(j).value.text != undefined)
+					code += '<td>' + row.getCell(j).value.text + '</td>';
+				else if (row.getCell(j).value.hyperlink != undefined)
+					code += '<td>' + row.getCell(j).value.hyperlink + '</td>';
+				else if (row.getCell(j).value.richText != undefined)
+					code += '<td>' + row.getCell(j).value.richText[0].text + '</td>';
+				else 
+					code += '<td>' + row.getCell(j).value + '</td>';
 		else code += '<td></td>';
 		code += '</tr>'
 	}
