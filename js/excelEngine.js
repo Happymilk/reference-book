@@ -66,22 +66,35 @@ function createTable(sheet) {
 		});
 	});
 
+	let reg = /[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}Z/i;
+
 	let code = '<tbody>';
 	for (let i = 1; i <= rowcount; i++) {
 		code += '<tr>'
 		let row = worksheet.getRow(i);
 		for (let j = 1; j <= max; j++)
 			if (row.getCell(j).value != null)
-				if (row.getCell(j).value.result != undefined)
-					code += '<td>' + row.getCell(j).value.result + '</td>';
+				if (row.getCell(j).value.result != undefined) {
+					let res = reg.exec(JSON.stringify(row.getCell(j).value.result));
+					if (res != null)
+						code += '<td>' + JSON.stringify(row.getCell(j).value.result).slice(1,11) + '</td>';
+					else 
+						code += '<td>' + row.getCell(j).value.result + '</td>';
+				}
 				else if (row.getCell(j).value.text != undefined)
 					code += '<td>' + row.getCell(j).value.text + '</td>';
 				else if (row.getCell(j).value.hyperlink != undefined)
 					code += '<td>' + row.getCell(j).value.hyperlink + '</td>';
 				else if (row.getCell(j).value.richText != undefined)
 					code += '<td>' + row.getCell(j).value.richText[0].text + '</td>';
-				else
-					code += '<td>' + row.getCell(j).value + '</td>';
+				else {
+					let res = reg.exec(JSON.stringify(row.getCell(j).value));
+					if (res != null)
+						code += '<td>' + JSON.stringify(row.getCell(j).value).slice(1,11) + '</td>';
+					else 
+						code += '<td>' + row.getCell(j).value + '</td>';
+				
+				}
 		else code += '<td></td>';
 		code += '</tr>'
 	}
