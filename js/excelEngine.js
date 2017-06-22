@@ -7,11 +7,12 @@
 [х] при сортировке все скачет
 [x] модифицировать алгоритм сортировки!! (сортирует по алфавиту даже цифры + скачет при одинаковых данных в строках)
 [х] [object Object]
+[x] ищет только по полному совпадению
 [ ] объединенные в Excel ячейки дублируются в проге
-[ ] если в цифровом столбце попадается число+цифры - не сортирует нормально
+[ ] если в цифровом столбце попадается число+цифры/ пустые строки/ одинаковые значения - не сортирует нормально
 [ ] динамический размер ячеек
 [ ] странный формат даты
-[ ] пустые строки
+
 
 Необходимые фичи
 [x] редактирование
@@ -24,7 +25,7 @@
 [х] добавление нового столбца
 [x] удаление строки
 [x] удаление столбца
-[ ] поиск
+[x] поиск
 [ ] фильтр
 [ ] РЕДАКТИРОВАНИЕ ФАЙЛА
 [ ] История изменений по оператору
@@ -229,7 +230,6 @@ function SearchReset(){
 		if(element.hasAttribute('class')){
 			let attrArr = element.getAttribute('class').split(' ');//массив содержащий все классы в теге
 			let attr = attrArr.filter(function(element,index){
-				//alert('!');
 				return (element != 'warning');
 			});
 			element.setAttribute('class',attr.join(' '));
@@ -242,7 +242,8 @@ btnSearch.onclick = function(){
 	let cells = Array.from($('td'));
 	let value = $('#searchContent').val();
 	let arr = cells.filter(function(element,index){
-		return ((element.innerHTML).trim().toLowerCase() == value.trim().toLowerCase());
+		if((element.innerHTML).trim().toLowerCase().includes(value.trim().toLowerCase())) return true;
+		return false;
 	});
 	arr.forEach(function(element,index){
 		element.setAttribute('class',(arr[0].getAttribute('class') + ' warning'));
