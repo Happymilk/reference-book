@@ -154,7 +154,9 @@ function workWithTable(){
 /*-----------------------------------фильтрация-------------------------------*/
 
 function filter(i){
+	let cells = Array.from($('td'));
 	document.location.href = '#modalFilter';
+	document.getElementById('filterContent').setAttribute('placeholder','Фильтровать по столбцу: '+cells[i].innerHTML);
 }
 
 function generateDropMenu(){
@@ -162,7 +164,8 @@ function generateDropMenu(){
 	let rows = Array.from($('tr'));
 	let code = '';
 	for (let i = 0; i < (cells.length) / (rows.length); i++){
-		code += '<li><a onclick="filter(' + i + ')">' + (cells[i].innerHTML) + '</a></li>';
+		if(cells[i].innerHTML!='')
+			code += '<li><a onclick="filter(' + i + ')">' + (cells[i].innerHTML) + '</a></li>';
 	}
 	document.getElementById('sort-dropdown-menu').innerHTML = code;
 }
