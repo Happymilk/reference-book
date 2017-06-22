@@ -33,10 +33,10 @@
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
                         <div class="input-group">
                             <div class="input-group-btn">
-                                <button class="btn btn-default" type="button" id="btnSearch">Искать</button>
+                                <button class="btn btn-default" type="button" id="btnSearch"><i class="fa fa-search"></i></button>
                                 <button class="btn btn-default" type="button" id="btnSearchReset">x</button>
                             </div>
-                            <input type="text" class="form-control" placeholder="Search for..." id="searchContent">
+                            <input type="text" class="form-control" placeholder="Искать..." id="searchContent">
                         </div>
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -49,11 +49,11 @@
                         </div>
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-success" id="btnAddRow">Добавить строку</button>
-                            <button type="button" class="btn btn-success" id="btnAddColl">Добавить колонку</button>
+                            <button type="button" class="btn btn-success" id="btnAddCol">Добавить колонку</button>
                         </div>
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-danger" id="btnDelRow">Удалить строку</button>
-                            <button type="button" class="btn btn-danger" id="btnDelColl">Удалить колонку</button>
+                            <button type="button" class="btn btn-danger" id="btnDelCol">Удалить колонку</button>
                         </div>
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-info" id="btnOperChanges">Именения по оператору</button>
@@ -69,11 +69,11 @@
             </div>
             <div id="modal" class="modalDialog">
                 <form>
-                    <a id="modalClose" title="Закрыть" class="close">X</a>
+                    <a id="modalBtnClose" title="Закрыть" class="close">X</a>
                     <h3>Создать новую запись или изменить существующую?</h3>
                     <div class="form-group">
-                        <button type="button" class="btn btn-default" id="modalAdd">Cоздать</button>
-                        <button type="button" class="btn btn-default" id="modalChange">Изменить</button>
+                        <button type="button" class="btn btn-default" id="modalBtnAdd">Cоздать</button>
+                        <button type="button" class="btn btn-default" id="modalBtnChange">Изменить</button>
                     </div>
                 </form>
             </div>

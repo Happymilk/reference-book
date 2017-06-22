@@ -174,12 +174,12 @@ function sortTable(){
 	let cells = Array.from($('td')); //массив всех ячеек таблицы
 	let rows = Array.from($('tr'));
 
-	for (let currentColl = 0; currentColl < (cells.length) / (rows.length); currentColl++){ //для шапки
-		cells[currentColl].oncontextmenu = function () {//по правому клику
+	for (let currentCol = 0; currentCol < (cells.length) / (rows.length); currentCol++){ //для шапки
+		cells[currentCol].oncontextmenu = function () {//по правому клику
 			let count = 0;
 			let filterCells = [];
 			cells.forEach(function (element, index) {
-				if (index == count * ((cells.length) / (rows.length)) + currentColl) {
+				if (index == count * ((cells.length) / (rows.length)) + currentCol) {
 					filterCells.push(element.innerHTML);
 					count++;
 				}
@@ -196,33 +196,7 @@ function sortTable(){
 	}
 }
 
-/*-----------------------------------обработчики кнопок-----------------------*/
-
-btnAddRow.onclick = function(){
-	let cells = Array.from($('td')); //массив всех ячеек таблицы
-	let rows = Array.from($('tr'));
-	let code = '<tr>';
-	for (let i = 1; i <= (cells.length) / (rows.length); i++)
-		code += '<td></td>';
-	code += '</tr>';
-	$('#firstTable').append(code);
-	workWithTable();
-}
-
-btnAddColl.onclick = function(){
-	$('tr').append('<td></td>');
-	workWithTable();
-}
-
-btnDelRow.onclick = function(){
-	$('tr:last-child').remove();
-	workWithTable();
-}
-
-btnDelColl.onclick = function(){
-	$('td:last-child').remove();
-	workWithTable();
-}
+/*-----------------------------------поиск------------------------------------*/
 
 function SearchReset(){
 	let cells = Array.from($('td'));
@@ -237,17 +211,50 @@ function SearchReset(){
 	});
 }
 
+/*-----------------------------------обработчики кнопок-----------------------*/
+
+btnAddRow.onclick = function(){ //add row
+	let cells = Array.from($('td'));
+	let rows = Array.from($('tr'));
+	let code = '<tr>';
+	for (let i = 1; i <= (cells.length) / (rows.length); i++)
+		code += '<td></td>';
+	code += '</tr>';
+	$('#firstTable').append(code);
+	workWithTable();
+}
+
+btnAddCol.onclick = function(){
+	$('tr').append('<td></td>');
+	workWithTable();
+}
+
+btnDelRow.onclick = function(){
+	$('tr:last-child').remove();
+	workWithTable();
+}
+
+btnDelCol.onclick = function(){
+	$('td:last-child').remove();
+	workWithTable();
+}
+
 btnSearch.onclick = function(){
 	SearchReset();
 	let cells = Array.from($('td'));
 	let value = $('#searchContent').val();
-	let arr = cells.filter(function(element,index){
-		if((element.innerHTML).trim().toLowerCase().includes(value.trim().toLowerCase())) return true;
-		return false;
-	});
-	arr.forEach(function(element,index){
-		element.setAttribute('class',(arr[0].getAttribute('class') + ' warning'));
-	});
+	if(value!=''){
+		let arr = cells.filter(function(element,index){
+			if((element.innerHTML).trim().toLowerCase().includes(value.trim().toLowerCase())) return true;
+			return false;
+		});
+		if(arr.length == 0){alert('Совпадений не найдено');}
+		else{
+			arr.forEach(function(element,index){
+				element.setAttribute('class',(arr[0].getAttribute('class') + ' warning'));
+			});
+		}
+	} else alert('Строка поиска пуста');
 }
 
 btnSearchReset.onclick = function(){
@@ -259,7 +266,7 @@ btnOperChanges.onclick = function(){
 	alert('История изменений по оператору');
 }
 
-modalAdd.onclick = function(){
+modalBtnAdd.onclick = function(){
 	edditCells.cellToEdit.innerHTML = edditCells.newCellVal;
 	$('#firstTable').append(edditCells.cellToEdit.parentElement.outerHTML);
 	edditCells.cellToEdit.innerHTML = edditCells.oldCellVal;
@@ -267,12 +274,12 @@ modalAdd.onclick = function(){
 	workWithTable();
 };
 
-modalChange.onclick = function(){
+modalBtnChange.onclick = function(){
 	edditCells.cellToEdit.innerHTML = edditCells.newCellVal;
 	document.location.href = '#close';
 }
 
-modalClose.onclick = function(){
+modalBtnClose.onclick = function(){
 	edditCells.cellToEdit.innerHTML = edditCells.oldCellVal;
 	document.location.href = '#close';
 }
