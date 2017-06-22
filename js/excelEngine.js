@@ -78,7 +78,7 @@ function createTable(sheet) {
 					let res = reg.exec(JSON.stringify(row.getCell(j).value.result));
 					if (res != null)
 						code += '<td>' + JSON.stringify(row.getCell(j).value.result).slice(1,11) + '</td>';
-					else 
+					else
 						code += '<td>' + row.getCell(j).value.result + '</td>';
 				}
 				else if (row.getCell(j).value.text != undefined)
@@ -91,9 +91,9 @@ function createTable(sheet) {
 					let res = reg.exec(JSON.stringify(row.getCell(j).value));
 					if (res != null)
 						code += '<td>' + JSON.stringify(row.getCell(j).value).slice(1,11) + '</td>';
-					else 
+					else
 						code += '<td>' + row.getCell(j).value + '</td>';
-				
+
 				}
 		else code += '<td></td>';
 		code += '</tr>'
@@ -134,7 +134,7 @@ function edditCells() {
 			$('#edit').blur(function () {
 				edditCells.newCellVal = $(this).val();
 				if (edditCells.newCellVal != edditCells.oldCellVal)
-					document.location.href = '#modal';
+					document.location.href = '#modalEdit';
 				else edditCells.cellToEdit.innerHTML = edditCells.oldCellVal;
 			});
 		};
@@ -153,7 +153,9 @@ function workWithTable(){
 }
 /*-----------------------------------фильтрация-------------------------------*/
 
-function filter(){}
+function filter(i){
+	document.location.href = '#modalFilter';
+}
 
 function generateDropMenu(){
 	let cells = Array.from($('td'));
@@ -306,7 +308,11 @@ modalBtnChange.onclick = function(){
 	document.location.href = '#close';
 }
 
-modalBtnClose.onclick = function(){
+modalBtnClose1.onclick = function(){
 	edditCells.cellToEdit.innerHTML = edditCells.oldCellVal;
+	document.location.href = '#close';
+}
+
+modalBtnClose2.onclick = function(){
 	document.location.href = '#close';
 }

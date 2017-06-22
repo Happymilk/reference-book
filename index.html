@@ -64,13 +64,23 @@
                     </table>
                 </div>
             </div>
-            <div id="modal" class="modalDialog">
+            <div id="modalEdit" class="modalDialog">
                 <form>
-                    <a id="modalBtnClose" title="Закрыть" class="close">X</a>
+                    <a id="modalBtnClose1" title="Закрыть" class="close">X</a>
                     <h3>Создать новую запись или изменить существующую?</h3>
                     <div class="form-group">
                         <button type="button" class="btn btn-default" id="modalBtnAdd">Cоздать</button>
                         <button type="button" class="btn btn-default" id="modalBtnChange">Изменить</button>
+                    </div>
+                </form>
+            </div>
+            <div id="modalFilter" class="modalDialog">
+                <form>
+                    <a id="modalBtnClose2" title="Закрыть" class="close">X</a>
+                    <h3>Введите строку по которой будет производиться фильтрация в выбранном столбце</h3>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Фитровать..." id="filterContent">
+                        <button type="button" class="btn btn-default" id="modalBtnFilter">Фильтровать</button>
                     </div>
                 </form>
             </div>
