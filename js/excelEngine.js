@@ -98,7 +98,7 @@ function createTable(sheet) {
 /*----------------------------------------------------------------------------*/
 
 function edditCells() {
-	let cells = Array.from($('td')); //массив всех ячеек таблицы
+	let cells = Array.from($('td'));
 	let rows = Array.from($('tr'));
 	cells.forEach(function (element, index, array) {
 		element.onclick = function (element) {
@@ -134,8 +134,22 @@ function edditCells() {
 }
 
 function workWithTable(){
+	generateDropMenu();
 	edditCells();
 	sortTable();
+}
+/*-----------------------------------фильтрация-------------------------------*/
+
+function filter(){}
+
+function generateDropMenu(){
+	let cells = Array.from($('td'));
+	let rows = Array.from($('tr'));
+	let code = '';
+	for (let i = 0; i < (cells.length) / (rows.length); i++){
+		code += '<li><a onclick="filter(' + i + ')">' + (cells[i].innerHTML) + '</a></li>';
+	}
+	document.getElementById('sort-dropdown-menu').innerHTML = code;
 }
 
 /*-----------------------------------сортировка-------------------------------*/
@@ -171,7 +185,7 @@ function GnomeSort(arrToAnalyze, arrToSort) {
 }
 
 function sortTable(){
-	let cells = Array.from($('td')); //массив всех ячеек таблицы
+	let cells = Array.from($('td'));
 	let rows = Array.from($('tr'));
 
 	for (let currentCol = 0; currentCol < (cells.length) / (rows.length); currentCol++){ //для шапки
