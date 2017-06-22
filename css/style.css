@@ -6,7 +6,27 @@ body {
     padding-top: 50px;
 }
 main {
-    margin: 20px;
+    margin: 70px 20px;
+}
+.input-group .form-control{
+    width: 200px;
+    display: inline;
+    border-color: #e7e7e7;
+}
+.input-group{
+    position: absolute;
+    margin-left: 920px;
+}
+#btnSearchReset{
+    background-color: #eee;
+    color: #999;
+}
+#btnSearchReset:hover{
+    background-color: #ddd;
+    border-color: #e7e7e7;
+}
+#btnSearchReset:active{
+    background-color: #ccc;
 }
 table tr {
     background-color: white;
@@ -23,12 +43,16 @@ textarea {
     padding: 0;
     background-color: rgba(0, 0, 0, 0);
 }
+main nav{
+    margin-top: 50px;
+}
+
 .btn {
     outline: none;
     overflow: hidden;
 }
-.btn-group + .btn-group {
-    margin: 0 10px 15px 0;
+.btn-group{
+    margin: 0 0 15px 10px;
 }
 .table-hover > tbody > tr:hover {
     background-color: #f5f5f5;
@@ -43,7 +67,7 @@ textarea {
     border-color: #e7e7e7;
 }
 .nav > li > a {
-    padding: 15px 17px 15px 0;
+    padding: 15px 16px 15px 0;
 }
 .form-group {
     margin: 15px 0 0;

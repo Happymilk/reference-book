@@ -39,10 +39,10 @@ const Excel = require('exceljs');
 let indexes = [null];
 let workbook = new Excel.Workbook();
 
-workbook.xlsx.readFile("НСИ.xlsx").then(function () {
+workbook.xlsx.readFile('НСИ.xlsx').then(function () {
 	let index = 1;
 	workbook.eachSheet(function (worksheet, sheetId) {
-		window.document.getElementById("navigation").innerHTML += '<li><a class="page-scroll" onclick="createTable(' + index + ')">' + worksheet.name + '</a></li>';
+		window.document.getElementById('navigation').innerHTML += '<li><a class="page-scroll" onclick="createTable(' + index + ')">' + worksheet.name + '</a></li>';
 		indexes.push(sheetId);
 		index++;
 	});
@@ -85,7 +85,7 @@ function createTable(sheet) {
 		code += '</tr>'
 	}
 	code += '</tbody>';
-	window.document.getElementById("firstTable").innerHTML = code;
+	window.document.getElementById('firstTable').innerHTML = code;
 
 	workWithTable();
 
@@ -97,8 +97,8 @@ function createTable(sheet) {
 /*----------------------------------------------------------------------------*/
 
 function edditCells() {
-	let cells = Array.from(document.getElementsByTagName('td')); //массив всех ячеек таблицы
-	let rows = Array.from(document.getElementsByTagName('tr'));
+	let cells = Array.from($('td')); //массив всех ячеек таблицы
+	let rows = Array.from($('tr'));
 	cells.forEach(function (element, index, array) {
 		element.onclick = function (element) {
 			let t = element.target || element.srcElement;
@@ -143,13 +143,11 @@ function GnomeSort(arrToAnalyze, arrToSort) {
 	let i = 2;
 	let j = 3;
 	while (i < arrToAnalyze.length) {
-		if(typeof(arrToAnalyze[i - 1])=='string') //если строка только из цифр - перевести в намбер и сравнивать как числа
-			if (arrToAnalyze[i - 1].search(/^[0-9]+$/gm) == 0){
-				arrToAnalyze[i - 1] = Number(arrToAnalyze[i - 1]);
+		if((typeof(arrToAnalyze[i - 1])=='string')&&(arrToAnalyze[i - 1].search(/^[0-9]+$/gm) == 0)){
+			arrToAnalyze[i - 1] = parseInt(arrToAnalyze[i - 1],10);
 			}
-		if (typeof(arrToAnalyze[i])=='string')
-			if (arrToAnalyze[i].search(/^[0-9]+$/gm) == 0){
-				arrToAnalyze[i] = Number(arrToAnalyze[i]);
+		if ((typeof(arrToAnalyze[i])=='string')&&(arrToAnalyze[i].search(/^[0-9]+$/gm) == 0)){
+				arrToAnalyze[i] = parseInt(arrToAnalyze[i],10);
 			}
 		if (arrToAnalyze[i - 1] < arrToAnalyze[i]) {
 			i = j;
@@ -172,8 +170,8 @@ function GnomeSort(arrToAnalyze, arrToSort) {
 }
 
 function sortTable(){
-	let cells = Array.from(document.getElementsByTagName('td')); //массив всех ячеек таблицы
-	let rows = Array.from(document.getElementsByTagName('tr'));
+	let cells = Array.from($('td')); //массив всех ячеек таблицы
+	let rows = Array.from($('tr'));
 
 	for (let currentColl = 0; currentColl < (cells.length) / (rows.length); currentColl++){ //для шапки
 		cells[currentColl].oncontextmenu = function () {//по правому клику
@@ -191,7 +189,7 @@ function sortTable(){
 			rows.forEach(function (element, index, array) {
 				a += element.outerHTML;
 			});
-			window.document.getElementById("firstTable").innerHTML = a;
+			window.document.getElementById('firstTable').innerHTML = a;
 			workWithTable();
 		}
 	}
@@ -199,9 +197,9 @@ function sortTable(){
 
 /*-----------------------------------обработчики кнопок-----------------------*/
 
-buttonAddRow.onclick = function(){
-	let cells = Array.from(document.getElementsByTagName('td')); //массив всех ячеек таблицы
-	let rows = Array.from(document.getElementsByTagName('tr'));
+btnAddRow.onclick = function(){
+	let cells = Array.from($('td')); //массив всех ячеек таблицы
+	let rows = Array.from($('tr'));
 	let code = '<tr>';
 	for (let i = 1; i <= (cells.length) / (rows.length); i++)
 		code += '<td></td>';
@@ -210,26 +208,33 @@ buttonAddRow.onclick = function(){
 	workWithTable();
 }
 
-buttonAddColl.onclick = function(){
+btnAddColl.onclick = function(){
 	$('tr').append('<td></td>');
 	workWithTable();
 }
 
-buttonDeleteRow.onclick = function(){
+btnDelRow.onclick = function(){
 	$('tr:last-child').remove();
 	workWithTable();
 }
 
-buttonDeleteColl.onclick = function(){
+btnDelColl.onclick = function(){
 	$('td:last-child').remove();
 	workWithTable();
 }
 
-buttonSearch.onclick = function(){
-	alert('Искать запись');
+btnSearch.onclick = function(){
+	let cells = Array.from($('td'));
+	let value = $('#searchContent').val();
+	let arr = cells.filter(function(element,index){
+		return ((element.innerHTML).trim().toLowerCase() == value.trim().toLowerCase());
+	});
+	arr.forEach(function(element,index){
+		element.setAttribute('class',(arr[0].getAttribute('class') + ' warning'));
+	});
 }
 
-buttonOperChanges.onclick = function(){
+btnOperChanges.onclick = function(){
 	alert('История изменений по оператору');
 }
 
