@@ -223,7 +223,22 @@ btnDelColl.onclick = function(){
 	workWithTable();
 }
 
+function SearchReset(){
+	let cells = Array.from($('td'));
+	cells.forEach(function(element,index){
+		if(element.hasAttribute('class')){
+			let attrArr = element.getAttribute('class').split(' ');//массив содержащий все классы в теге
+			let attr = attrArr.filter(function(element,index){
+				//alert('!');
+				return (element != 'warning');
+			});
+			element.setAttribute('class',attr.join(' '));
+		}
+	});
+}
+
 btnSearch.onclick = function(){
+	SearchReset();
 	let cells = Array.from($('td'));
 	let value = $('#searchContent').val();
 	let arr = cells.filter(function(element,index){
@@ -232,6 +247,11 @@ btnSearch.onclick = function(){
 	arr.forEach(function(element,index){
 		element.setAttribute('class',(arr[0].getAttribute('class') + ' warning'));
 	});
+}
+
+btnSearchReset.onclick = function(){
+	document.getElementById('firstTable').value = null;
+	SearchReset();
 }
 
 btnOperChanges.onclick = function(){
