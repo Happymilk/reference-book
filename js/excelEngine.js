@@ -35,10 +35,9 @@
 /*----------------------------------------------------------------------------*/
 						    let ANDREY = 'make his code';
 /*----------------------------------------------------------------------------*/
-
 const Excel = require('exceljs');
-let indexes = [null];
 let workbook = new Excel.Workbook();
+let indexes = [null];
 
 workbook.xlsx.readFile('НСИ.xlsx').then(function () {
 	let index = 1;
@@ -153,10 +152,34 @@ function workWithTable(){
 }
 /*-----------------------------------фильтрация-------------------------------*/
 
-function filter(i){
+function generateFilterModal(i){
 	let cells = Array.from($('td'));
 	document.location.href = '#modalFilter';
-	document.getElementById('filterContent').setAttribute('placeholder','Фильтровать по столбцу: '+cells[i].innerHTML);
+	document.getElementById('filterCell').innerHTML = cells[i].innerHTML;
+	generateFilterModal.index = i;
+}
+
+modalBtnFilter.onclick = function(){
+	let cells = Array.from($('td'));
+	let rows = Array.from($('tr'));
+	let i = generateFilterModal.index;
+	let val = $('#filterContent').val();
+	//alert('Фильтровать таблицу по столбцу ' + cells[i].innerHTML + ' по значению '+ val);
+	let count = 1;
+	let arr = [];
+	arr.push(rows[0].outerHTML);
+	cells.forEach(function (element, index) {
+		if (index == count * ((cells.length) / (rows.length)) + i) {
+			if (element.innerHTML == val)
+				arr.push(rows[i].outerHTML);
+		count++;
+		}
+	});
+
+	arr = arr.join();
+	alert(arr);
+	$('#firstTable').empty().append(arr);
+	document.location.href = '#close';
 }
 
 function generateDropMenu(){
@@ -165,7 +188,7 @@ function generateDropMenu(){
 	let code = '';
 	for (let i = 0; i < (cells.length) / (rows.length); i++){
 		if(cells[i].innerHTML!='')
-			code += '<li><a onclick="filter(' + i + ')">' + (cells[i].innerHTML) + '</a></li>';
+			code += '<li><a onclick="generateFilterModal(' + i + ')">' + (cells[i].innerHTML) + '</a></li>';
 	}
 	document.getElementById('sort-dropdown-menu').innerHTML = code;
 }
