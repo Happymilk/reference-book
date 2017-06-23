@@ -48,13 +48,19 @@ workbook.xlsx.readFile('НСИ.xlsx').then(function () {
 		indexes.push(sheetId);
 		index++;
 	});
-	createTable(1);
-});
-
-function createTable(sheet) {
 	Array.from(document.getElementsByClassName('loader')).forEach(function(element,index){
 		element.style.display = 'block';
 	});
+	createTable(1);
+	setTimeout(function(){
+		Array.from(document.getElementsByClassName('loader')).forEach(function(element,index){
+			element.style.display = 'none';
+		});
+	},2000);
+});
+
+function createTable(sheet) {
+	curSheet = sheet;
 	let worksheet = workbook.getWorksheet(indexes[sheet]);
 	let rowcount = 0;
 
@@ -81,7 +87,7 @@ function createTable(sheet) {
 				code += '<td class="table-header">';
 			else
 				code += '<td>';
-			if (row.getCell(j).value != null) 
+			if (row.getCell(j).value != null)
 				if (row.getCell(j).value.result != undefined) {
 					let res = reg.exec(JSON.stringify(row.getCell(j).value.result));
 					if (res != null)
@@ -108,12 +114,8 @@ function createTable(sheet) {
 	}
 	code += '</tbody>';
 	window.document.getElementById('firstTable').innerHTML = code;
-
 	workWithTable();
-
-	Array.from(document.getElementsByClassName('loader')).forEach(function(element,index){
-		element.style.display = 'none';
-	});
+	obed();
 }
 
 function checkShapon(worksheet, rowcount, max) {
@@ -140,7 +142,7 @@ function checkShapon(worksheet, rowcount, max) {
 				}
 			}
 			j++;
-		}	
+		}
 		i++;
 	}
 	return i;
@@ -149,6 +151,27 @@ function checkShapon(worksheet, rowcount, max) {
 /*----------------------------------------------------------------------------*/
 						    let VICA = 'make her code';
 /*----------------------------------------------------------------------------*/
+
+let head = [1,1,2,3,2,2,1,1,1,1,2,2,2];
+let curSheet;
+
+function obed(){
+	let cells = Array.from($('td'));
+	let rows = Array.from($('tr'));
+	let index = curSheet-1;
+	alert(index);
+	for(let i = 1; i < head[index]*(cells.length)/(rows.length) ;i++){
+		if((cells[i].innerHTML == cells[i-1].innerHTML)&&(cells[i].innerHTML!='')){
+			if(cells[i-1].hasAttribute('colspan')){
+				cells[i].setAttribute('colspan',(Number(cells[i-1].getAttribute('colspan'))+1));
+				//alert('[i]='+cells[i].innerHTML+'/[i-1]='+cells[i-1].innerHTML+'/colspan='+cells[i-1].getAttribute('colspan'));
+			} else cells[i].setAttribute('colspan',2);
+			cells[i-1].outerHTML = '';
+		}
+	}
+	//alert('в таблице шапка занимает '+head[index]+' строк');
+
+}
 
 function edditCells() {
 	let cells = Array.from($('td'));
