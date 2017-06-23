@@ -8,10 +8,11 @@
 [x] модифицировать алгоритм сортировки!! (сортирует по алфавиту даже цифры + скачет при одинаковых данных в строках)
 [х] [object Object]
 [x] ищет только по полному совпадению
+[x] странный формат даты
 [ ] объединенные в Excel ячейки дублируются в проге
 [ ] если в цифровом столбце попадается число+цифры/ пустые строки/ одинаковые значения - не сортирует нормально
 [ ] динамический размер ячеек
-[ ] странный формат даты
+[ ] пиринг_2017 ШАПКА ФИКС
 
 
 Необходимые фичи
@@ -27,6 +28,7 @@
 [x] удаление столбца
 [x] поиск
 [x] фильтр
+[ ] справка
 [ ] РЕДАКТИРОВАНИЕ ФАЙЛА
 [ ] История изменений по оператору
 [ ] при добавлении запиcи(редактирование!!!), добавлять дату редактирования*/
@@ -50,8 +52,9 @@ workbook.xlsx.readFile('НСИ.xlsx').then(function () {
 });
 
 function createTable(sheet) {
-	window.document.getElementById('loader').style.display = 'block';
-
+	Array.from(document.getElementsByClassName('loader')).forEach(function(element,index){
+		element.style.display = 'block';
+	});
 	let worksheet = workbook.getWorksheet(indexes[sheet]);
 	let rowcount = 0;
 
@@ -102,7 +105,9 @@ function createTable(sheet) {
 
 	workWithTable();
 
-	window.document.getElementById('loader').style.display = 'none';
+	Array.from(document.getElementsByClassName('loader')).forEach(function(element,index){
+		element.style.display = 'none';
+	});
 }
 
 /*----------------------------------------------------------------------------*/
