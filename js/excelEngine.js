@@ -26,7 +26,7 @@
 [x] удаление строки
 [x] удаление столбца
 [x] поиск
-[ ] фильтр
+[x] фильтр
 [ ] РЕДАКТИРОВАНИЕ ФАЙЛА
 [ ] История изменений по оператору
 [ ] при добавлении запиcи(редактирование!!!), добавлять дату редактирования*/
@@ -160,26 +160,31 @@ function generateFilterModal(i){
 }
 
 modalBtnFilter.onclick = function(){
+	let val = $('#filterContent').val();
 	let cells = Array.from($('td'));
 	let rows = Array.from($('tr'));
-	let i = generateFilterModal.index;
-	let val = $('#filterContent').val();
-	//alert('Фильтровать таблицу по столбцу ' + cells[i].innerHTML + ' по значению '+ val);
+	generateFilterModal.oldTable = rows;
 	let count = 1;
 	let arr = [];
 	arr.push(rows[0].outerHTML);
 	cells.forEach(function (element, index) {
-		if (index == count * ((cells.length) / (rows.length)) + i) {
-			if (element.innerHTML == val)
-				arr.push(rows[i].outerHTML);
+		if (index == count * ((cells.length) / (rows.length)) + generateFilterModal.index) {
+			if (element.innerHTML == val){
+				arr.push(rows[count].outerHTML);
+			}
 		count++;
 		}
 	});
-
-	arr = arr.join();
-	alert(arr);
-	$('#firstTable').empty().append(arr);
+	if (arr.length == 1)
+		alert('Совпадений по столбцу '+cells[generateFilterModal.index].innerHTML+' со значением '+val+' не найдено');
+	else
+		$('#firstTable').empty().append(arr.join());
+	document.getElementById('filterContent').value = '';
 	document.location.href = '#close';
+}
+
+btnFilterReset.onclick = function(){
+	$('#firstTable').empty().append(generateFilterModal.oldTable);
 }
 
 function generateDropMenu(){

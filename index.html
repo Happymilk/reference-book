@@ -34,15 +34,18 @@
                         <div class="input-group">
                             <div class="input-group-btn">
                                 <button class="btn btn-default" type="button" id="btnSearch"><i class="fa fa-search"></i></button>
-                                <button class="btn btn-default" type="button" id="btnSearchReset">x</button>
+                                <button class="btn btn-default close-btn" type="button" id="btnSearchReset">x</button>
                             </div>
                             <input type="text" class="form-control" placeholder="Искать..." id="searchContent">
                         </div>
                         <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Фильтовать по: <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" id="sort-dropdown-menu"></ul>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Фильтовать по: <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" id="sort-dropdown-menu"></ul>
+                            </div>
+                            <button class="btn btn-default close-btn" type="button" id="btnFilterReset">x</button>
                         </div>
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-success" id="btnAddRow">Добавить строку</button>
