@@ -11,8 +11,8 @@
 [x] странный формат даты
 [ ] объединенные в Excel ячейки дублируются в проге
 [ ] если в цифровом столбце попадается число+цифры/ пустые строки/ одинаковые значения - не сортирует нормально
-[ ] динамический размер ячеек
-[ ] пиринг_2017 ШАПКА ФИКС
+[x] динамический размер ячеек
+[x] пиринг_2017 ШАПКА ФИКС
 
 
 Необходимые фичи
@@ -70,34 +70,40 @@ function createTable(sheet) {
 
 	let reg = /[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}Z/i;
 
+	let shapon = checkShapon(worksheet, rowcount, max);
+
 	let code = '<tbody>';
 	for (let i = 1; i <= rowcount; i++) {
 		code += '<tr>'
 		let row = worksheet.getRow(i);
-		for (let j = 1; j <= max; j++)
-			if (row.getCell(j).value != null)
+		for (let j = 1; j <= max; j++) {
+			if (i <= shapon)
+				code += '<td class="table-header">';
+			else
+				code += '<td>';
+			if (row.getCell(j).value != null) 
 				if (row.getCell(j).value.result != undefined) {
 					let res = reg.exec(JSON.stringify(row.getCell(j).value.result));
 					if (res != null)
-						code += '<td>' + JSON.stringify(row.getCell(j).value.result).slice(1,11) + '</td>';
+						code += JSON.stringify(row.getCell(j).value.result).slice(1,11) + '</td>';
 					else
-						code += '<td>' + row.getCell(j).value.result + '</td>';
+						code += row.getCell(j).value.result + '</td>';
 				}
 				else if (row.getCell(j).value.text != undefined)
-					code += '<td>' + row.getCell(j).value.text + '</td>';
+					code += row.getCell(j).value.text + '</td>';
 				else if (row.getCell(j).value.hyperlink != undefined)
-					code += '<td>' + row.getCell(j).value.hyperlink + '</td>';
+					code += row.getCell(j).value.hyperlink + '</td>';
 				else if (row.getCell(j).value.richText != undefined)
-					code += '<td>' + row.getCell(j).value.richText[0].text + '</td>';
+					code += row.getCell(j).value.richText[0].text + '</td>';
 				else {
 					let res = reg.exec(JSON.stringify(row.getCell(j).value));
 					if (res != null)
-						code += '<td>' + JSON.stringify(row.getCell(j).value).slice(1,11) + '</td>';
+						code += JSON.stringify(row.getCell(j).value).slice(1,11) + '</td>';
 					else
-						code += '<td>' + row.getCell(j).value + '</td>';
-
+						code += row.getCell(j).value + '</td>';
 				}
-		else code += '<td></td>';
+			else code += '</td>';
+		}
 		code += '</tr>'
 	}
 	code += '</tbody>';
@@ -108,6 +114,36 @@ function createTable(sheet) {
 	Array.from(document.getElementsByClassName('loader')).forEach(function(element,index){
 		element.style.display = 'none';
 	});
+}
+
+function checkShapon(worksheet, rowcount, max) {
+	let i = 1, reg = /[-._a-z0-9]+@(?:[a-z0-9][-a-z0-9]+\.)+[a-z]{2,6}/i;
+	while (i <= rowcount) {
+		let row = worksheet.getRow(i), j = 1;
+		while (j <= max) {
+			if (row.getCell(j).value != null) {
+				if (row.getCell(j).value.text != undefined) {
+					if (!Number.isNaN(+row.getCell(j).value.text))
+						return i-1;
+					else {
+						let res = reg.exec(JSON.stringify(row.getCell(j).value.text));
+						if (res != null)
+							return i-1;
+					}
+				}
+				else if (!Number.isNaN(+row.getCell(j).value.toString()))
+					return i-1;
+				else {
+					let res = reg.exec(JSON.stringify(row.getCell(j).value));
+					if (res != null)
+						return i-1;
+				}
+			}
+			j++;
+		}	
+		i++;
+	}
+	return i;
 }
 
 /*----------------------------------------------------------------------------*/
