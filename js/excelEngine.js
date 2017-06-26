@@ -9,10 +9,11 @@
 [х] [object Object]
 [x] ищет только по полному совпадению
 [x] странный формат даты
-[ ] объединенные в Excel ячейки дублируются в проге
-[ ] если в цифровом столбце попадается число+цифры/ пустые строки/ одинаковые значения - не сортирует нормально
 [x] динамический размер ячеек
 [x] пиринг_2017 ШАПКА ФИКС
+[ ] если в цифровом столбце попадается число+цифры/ пустые строки/ одинаковые значения - не сортирует нормально
+[ ] фильтрация по последним строкам шапки
+[ ] объединение ячеек и фильтрация не по готовым шапкам а по подгруженным
 
 
 Необходимые фичи
@@ -115,7 +116,7 @@ function createTable(sheet) {
 	code += '</tbody>';
 	window.document.getElementById('firstTable').innerHTML = code;
 	workWithTable();
-	obed();
+	cellsComb();
 }
 
 function checkShapon(worksheet, rowcount, max) {
@@ -155,22 +156,27 @@ function checkShapon(worksheet, rowcount, max) {
 let head = [1,1,2,3,2,2,1,1,1,1,2,2,2];
 let curSheet;
 
-function obed(){
+function cellsComb(){
 	let cells = Array.from($('td'));
 	let rows = Array.from($('tr'));
 	let index = curSheet-1;
-	alert(index);
-	for(let i = 1; i < head[index]*(cells.length)/(rows.length) ;i++){
+
+	for(let i = 1; i < head[index]*(cells.length)/(rows.length);i++){
 		if((cells[i].innerHTML == cells[i-1].innerHTML)&&(cells[i].innerHTML!='')){
 			if(cells[i-1].hasAttribute('colspan')){
 				cells[i].setAttribute('colspan',(Number(cells[i-1].getAttribute('colspan'))+1));
-				//alert('[i]='+cells[i].innerHTML+'/[i-1]='+cells[i-1].innerHTML+'/colspan='+cells[i-1].getAttribute('colspan'));
 			} else cells[i].setAttribute('colspan',2);
 			cells[i-1].outerHTML = '';
 		}
 	}
-	//alert('в таблице шапка занимает '+head[index]+' строк');
-
+	if(index!=4){
+		for(let i = 0; i < head[index]*(cells.length)/(rows.length);i++){
+			if((cells[i].innerHTML == cells[i+(cells.length)/(rows.length)].innerHTML)&&(cells[i].innerHTML!='')){
+				cells[i].setAttribute('rowspan',2);
+				cells[i+(cells.length)/(rows.length)].outerHTML = '';
+			}
+		}
+	}
 }
 
 function edditCells() {
