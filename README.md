@@ -21,7 +21,7 @@ Install the dependencies.
 
 ```sh
 $ cd reference-book
-$ npm install excelljs
+$ npm install xlsx
 ```
 
 Requires [NW.js](https://nwjs.io/downloads/) v0.23.3+ to run.
@@ -40,7 +40,7 @@ Install the dependencies.
 
 ```sh
 $ cd reference-book
-$ npm install excelljs
+$ npm install xlsx
 ```
 
 Requires [NW.js](https://nwjs.io/downloads/) v0.23.3+ to run.

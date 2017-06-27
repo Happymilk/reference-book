@@ -38,106 +38,78 @@
 /*----------------------------------------------------------------------------*/
 						    let ANDREY = 'make his code';
 /*----------------------------------------------------------------------------*/
-const Excel = require('exceljs');
-let workbook = new Excel.Workbook();
-let indexes = [null];
+const XLSX = require('xlsx');
+let workbook = XLSX.readFile('НСИ.xlsx');
 
-workbook.xlsx.readFile('НСИ.xlsx').then(function () {
-	let index = 1;
-	workbook.eachSheet(function (worksheet, sheetId) {
-		window.document.getElementById('navigation').innerHTML += '<li><a class="page-scroll" onclick="createTable(' + index + ')">' + worksheet.name + '</a></li>';
-		indexes.push(sheetId);
-		index++;
-	});
+let gui = require('nw.gui');
+gui.Window.get().on('close', function() {
+	let r = confirm("Вы уверены?");
+	if (r == true) {
+		try {
+			XLSX.writeFile(workbook, 'out.xlsx');
+		} catch(e) {
+			alert('error');
+		} finally {
+			this.close(true);
+		}
+	} 
+});
+
+window.onload = function() {
+	for (let i = 0; i < workbook.SheetNames.length; i++) 
+		window.document.getElementById('navigation').innerHTML += '<li><a class="page-scroll" onclick="createTable(' + i + ')">' + workbook.SheetNames[i] + '</a></li>';
+
 	Array.from(document.getElementsByClassName('loader')).forEach(function(element,index){
 		element.style.display = 'block';
 	});
-	createTable(1);
+	createTable(0);
 	setTimeout(function(){
 		Array.from(document.getElementsByClassName('loader')).forEach(function(element,index){
 			element.style.display = 'none';
 		});
 	},2000);
-});
+}
 
 function createTable(sheet) {
 	curSheet = sheet;
-	let worksheet = workbook.getWorksheet(indexes[sheet]);
-	let rowcount = 0;
-
-	worksheet.getColumn(1).eachCell(function (cell, rowNumber) {
-		rowcount = rowNumber;
-	});
-	let max = 0;
-	worksheet.eachRow(function (row, rowNumber) {
-		row.eachCell(function (cell, colNumber) {
-			if (max < colNumber) max = colNumber;
-		});
-	});
-
-	let reg = /[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}Z/i;
-
-	let shapon = checkShapon(worksheet, rowcount, max);
-
-	let code = '<tbody>';
-	for (let i = 1; i <= rowcount; i++) {
-		code += '<tr>'
-		let row = worksheet.getRow(i);
-		for (let j = 1; j <= max; j++) {
-			if (i <= shapon)
-				code += '<td class="table-header">';
-			else
-				code += '<td>';
-			if (row.getCell(j).value != null)
-				if (row.getCell(j).value.result != undefined) {
-					let res = reg.exec(JSON.stringify(row.getCell(j).value.result));
-					if (res != null)
-						code += JSON.stringify(row.getCell(j).value.result).slice(1,11) + '</td>';
-					else
-						code += row.getCell(j).value.result + '</td>';
-				}
-				else if (row.getCell(j).value.text != undefined)
-					code += row.getCell(j).value.text + '</td>';
-				else if (row.getCell(j).value.hyperlink != undefined)
-					code += row.getCell(j).value.hyperlink + '</td>';
-				else if (row.getCell(j).value.richText != undefined)
-					code += row.getCell(j).value.richText[0].text + '</td>';
-				else {
-					let res = reg.exec(JSON.stringify(row.getCell(j).value));
-					if (res != null)
-						code += JSON.stringify(row.getCell(j).value).slice(1,11) + '</td>';
-					else
-						code += row.getCell(j).value + '</td>';
-				}
-			else code += '</td>';
-		}
-		code += '</tr>'
-	}
-	code += '</tbody>';
+	let worksheet = workbook.Sheets[workbook.SheetNames[sheet]];
+	let shapon = checkShapon(worksheet);
+	let code = XLSX.utils.sheet_to_html(worksheet).slice(90,-22);
 	window.document.getElementById('firstTable').innerHTML = code;
 	workWithTable();
-	cellsComb();
+	//cellsComb();
+	setHeaders(shapon);
 }
 
-function checkShapon(worksheet, rowcount, max) {
-	let i = 1, reg = /[-._a-z0-9]+@(?:[a-z0-9][-a-z0-9]+\.)+[a-z]{2,6}/i;
+function setHeaders(shapon) {
+	let rows = Array.from($('tr'));
+	for (let i = 0; i < shapon; i++) 
+		rows[i].setAttribute('class', 'table-header');
+}
+
+function checkShapon(worksheet) {
+	let reg = /[A-Z]{1,3}\d{1,5}/g; 
+	let res = worksheet['!ref'].toString().match(reg);
+	reg = /[A-Z]{1,3}/g;
+	let results = reg.exec(res[1]);
+	let max = results[0].charCodeAt(0);
+	reg = /\d{1,5}/g;
+	results = reg.exec(res[1]);
+	let rowcount = results[0];
+
+	let i = 1; reg = /[-._a-z0-9]+@(?:[a-z0-9][-a-z0-9]+\.)+[a-z]{2,6}/i;
 	while (i <= rowcount) {
-		let row = worksheet.getRow(i), j = 1;
+		let j = 65;
 		while (j <= max) {
-			if (row.getCell(j).value != null) {
-				if (row.getCell(j).value.text != undefined) {
-					if (!Number.isNaN(+row.getCell(j).value.text))
+			let curCell = String.fromCharCode(j) + i;
+			if (worksheet[curCell] != null) {
+				if (worksheet[curCell].t == 'n') {
+					let regex = /[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{1,2}/g;
+					let ress = regex.exec(worksheet[curCell].w);
+					if (ress == null)
 						return i-1;
-					else {
-						let res = reg.exec(JSON.stringify(row.getCell(j).value.text));
-						if (res != null)
-							return i-1;
-					}
-				}
-				else if (!Number.isNaN(+row.getCell(j).value.toString()))
-					return i-1;
-				else {
-					let res = reg.exec(JSON.stringify(row.getCell(j).value));
+				} else {
+					let res = reg.exec(JSON.stringify(worksheet[curCell].v));
 					if (res != null)
 						return i-1;
 				}
