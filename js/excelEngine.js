@@ -73,14 +73,31 @@ window.onload = function() {
 function createTable(sheet) {
 	curSheet = sheet;
 	let worksheet = workbook.Sheets[workbook.SheetNames[sheet]];
+	let shapon = checkShapon(worksheet);
 	let code = XLSX.utils.sheet_to_html(worksheet).slice(90,-22);
 	window.document.getElementById('firstTable').innerHTML = code;
 	workWithTable();
 	//cellsComb();
+	setHeaders(shapon);
 }
 
-function checkShapon(worksheet, rowcount, max) {
-	let i = 1, reg = /[-._a-z0-9]+@(?:[a-z0-9][-a-z0-9]+\.)+[a-z]{2,6}/i;
+function setHeaders(shapon) {
+	let rows = Array.from($('tr'));
+	for (let i = 0; i < shapon; i++) 
+		rows[i].setAttribute('class', 'table-header');
+}
+
+function checkShapon(worksheet) {
+	let reg = /[A-Z]{1,3}\d{1,5}/g; 
+	let res = worksheet['!ref'].toString().match(reg);
+	reg = /[A-Z]{1,3}/g;
+	let results = reg.exec(res[1]);
+	let max = results[0].charCodeAt(0);
+	reg = /\d{1,5}/g;
+	results = reg.exec(res[1]);
+	let rowcount = results[0];
+
+	let i = 1; reg = /[-._a-z0-9]+@(?:[a-z0-9][-a-z0-9]+\.)+[a-z]{2,6}/i;
 	while (i <= rowcount) {
 		let j = 65;
 		while (j <= max) {
