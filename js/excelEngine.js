@@ -73,37 +73,10 @@ window.onload = function() {
 function createTable(sheet) {
 	curSheet = sheet;
 	let worksheet = workbook.Sheets[workbook.SheetNames[sheet]];
-
-	let reg = /[A-Z]{1,3}\d{1,5}/g; 
-	let res = worksheet['!ref'].toString().match(reg);
-	reg = /[A-Z]{1,3}/g;
-	let results = reg.exec(res[1]);
-	let max = results[0].charCodeAt(0);
-	reg = /\d{1,5}/g;
-	results = reg.exec(res[1]);
-	let rowcount = results[0];
-
-	let shapon = checkShapon(worksheet, rowcount, max);
-
-	let code = '<tbody>';
-	for (let i = 1; i <= rowcount; i++) {
-		code += '<tr>';
-		for (let j = 65; j <= max; j++) {
-			if (i <= shapon)
-				code += '<td class="table-header">';
-			else
-				code += '<td>';
-			let curCell = String.fromCharCode(j) + i;
-			if (worksheet[curCell] != null)
-				code += worksheet[curCell].w + '</td>';
-			else code += '</td>';
-		}
-		code += '</tr>'
-	}
-	code += '</tbody>';
+	let code = XLSX.utils.sheet_to_html(worksheet).slice(90,-22);
 	window.document.getElementById('firstTable').innerHTML = code;
 	workWithTable();
-	cellsComb();
+	//cellsComb();
 }
 
 function checkShapon(worksheet, rowcount, max) {
