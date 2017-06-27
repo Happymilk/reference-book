@@ -40,13 +40,16 @@
 /*----------------------------------------------------------------------------*/
 const XLSX = require('xlsx');
 let workbook = XLSX.readFile('НСИ.xlsx');
+let worksheet = null;
 
 let gui = require('nw.gui');
 gui.Window.get().on('close', function() {
 	let r = confirm("Вы уверены?");
 	if (r == true) {
 		try {
-			XLSX.writeFile(workbook, 'out.xlsx');
+			if (worksheet != null)
+				workbook.Sheets[workbook.SheetNames[curSheet]] = XLSX.utils.table_to_sheet(document.getElementById('firstTable'));
+			XLSX.writeFile(workbook, 'НСИ.xlsx');
 		} catch(e) {
 			alert('error');
 		} finally {
@@ -71,8 +74,10 @@ window.onload = function() {
 }
 
 function createTable(sheet) {
+	if (worksheet != null)
+		workbook.Sheets[workbook.SheetNames[curSheet]] = XLSX.utils.table_to_sheet(document.getElementById('firstTable'));
 	curSheet = sheet;
-	let worksheet = workbook.Sheets[workbook.SheetNames[sheet]];
+	worksheet = workbook.Sheets[workbook.SheetNames[sheet]];
 	let shapon = checkShapon(worksheet);
 	let code = XLSX.utils.sheet_to_html(worksheet).slice(90,-22);
 	window.document.getElementById('firstTable').innerHTML = code;
